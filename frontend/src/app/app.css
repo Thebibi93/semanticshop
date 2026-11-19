@@ -11,10 +11,6 @@
   max-width: 1180px;
   margin: 0 auto;
   padding: 12px 24px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
 }
 
 .brand {
@@ -71,8 +67,6 @@
 }
 
 .user-chip {
-  display: inline-flex;
-  align-items: center;
   gap: 8px;
   background: var(--surface);
   border: 1px solid var(--line);
