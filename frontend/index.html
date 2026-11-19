@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SemanticShop — Recherche sémantique de produits</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="header">
+    <div class="container header-inner">
+      <a class="logo" href="/">Semantic<span>Shop</span></a>
+      <nav class="nav">
+        <button id="nav-orders" class="nav-btn" type="button">Mes commandes</button>
+        <button id="nav-cart" class="nav-btn" type="button">Panier <span id="cart-count" class="badge">0</span></button>
+        <span id="auth-area"></span>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <h1>Cherchez vos produits en langage naturel</h1>
+      <p class="hero-sub">Recherche sémantique par similarité cosinus (pgvector) — « un cadeau pour un fan de foot », « casque silencieux pour le train »…</p>
+      <form id="search-form" class="search-bar" autocomplete="off">
+        <input id="search-input" type="text" placeholder="Décrivez le produit dont vous rêvez…" required>
+        <button class="btn primary" type="submit">Rechercher</button>
+      </form>
+      <div class="filters">
+        <label>Prix max (€) <input id="filter-max-price" type="number" min="0" placeholder="300"></label>
+        <label class="checkbox"><input id="filter-in-stock" type="checkbox"> En stock uniquement</label>
+        <button id="filter-reset" class="btn ghost" type="button">Réinitialiser</button>
+      </div>
+    </div>
+  </section>
+
+  <main class="container">
+    <div class="section-head">
+      <h2 id="results-title">Nouveautés du catalogue</h2>
+      <span id="results-count" class="muted"></span>
+    </div>
+    <div id="results-grid" class="grid"></div>
+    <p id="empty-state" class="empty hidden">Aucun produit ne correspond. Essayez une autre description.</p>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <span>Django + FastAPI + PostgreSQL/pgvector</span>
+      <a href="http://localhost:8000/admin/" target="_blank" rel="noopener">Administration du catalogue</a>
+      <a href="http://localhost:8001/docs" target="_blank" rel="noopener">API sémantique (docs)</a>
+    </div>
+  </footer>
+
+  <div id="modal-overlay" class="overlay hidden">
+    <div id="modal" class="modal">
+      <button class="modal-close" type="button" data-close>&times;</button>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <aside id="drawer" class="drawer hidden">
+    <div class="drawer-head">
+      <h3 id="drawer-title"></h3>
+      <button class="modal-close" type="button" data-close-drawer>&times;</button>
+    </div>
+    <div id="drawer-body" class="drawer-body"></div>
+  </aside>
+
+  <div id="toast-zone" class="toast-zone"></div>
+
+  <script src="app.js" defer></script>
+</body>
+</html>

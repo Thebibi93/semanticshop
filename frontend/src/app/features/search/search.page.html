@@ -1,0 +1,71 @@
+<section class="hero">
+  <span class="eyebrow">Recherche sémantique</span>
+  <h1>Trouve le produit que tu as en tête</h1>
+  <p class="subtitle">Décris ton besoin en langage naturel, la recherche sémantique s'occupe du reste.</p>
+  <form class="search-form" (submit)="onSearch($event)">
+    <input
+      #searchBox
+      class="search-input"
+      type="text"
+      [value]="query()"
+      (input)="query.set(searchBox.value)"
+      placeholder="ex. une enceinte résistante à l'eau pour la douche"
+      aria-label="Recherche sémantique"
+    />
+    <button class="btn primary" type="submit" [disabled]="searching()">Rechercher</button>
+  </form>
+  <div class="filters">
+    <label class="filter">
+      Prix max
+      <input
+        #filterPrice
+        type="number"
+        min="0"
+        step="1"
+        [value]="maxPrice()"
+        (input)="maxPrice.set(filterPrice.value)"
+        placeholder="€"
+        aria-label="Prix maximum"
+      />
+    </label>
+    <label class="filter">
+      En stock
+      <input
+        #stockBox
+        type="checkbox"
+        [checked]="inStock()"
+        (change)="inStock.set(stockBox.checked)"
+        aria-label="Uniquement les produits en stock"
+      />
+    </label>
+    <button class="reset-btn" type="button" (click)="resetFilters()">Réinitialiser les filtres</button>
+  </div>
+</section>
+<section>
+  @if (loadingCatalog()) {
+    <div class="state-note"><span class="spinner"></span>Chargement du catalogue…</div>
+  } @else if (searching()) {
+    <div class="state-note"><span class="spinner"></span>Recherche en cours…</div>
+  } @else {
+    <div class="results-head">
+      <h2>{{ resultTitle() }}</h2>
+      @if (resultCount() !== null) {
+        <span class="count-chip">{{ resultCount() }} produit(s)</span>
+      }
+    </div>
+    @if (hasResults()) {
+      <div class="results-grid">
+        @for (product of shownResults(); track product.id) {
+          <app-product-card
+            [product]="product"
+            [score]="showScores() ? (product.score ?? null) : null"
+            (addToCart)="addToCart($event)"
+            (showSimilar)="openSimilar($event)"
+          />
+        }
+      </div>
+    } @else {
+      <div class="empty-note">Aucun produit ne correspond. Essaie une autre formulation.</div>
+    }
+  }
+</section>

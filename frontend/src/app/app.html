@@ -1,0 +1,33 @@
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" routerLink="/">Semantic<span>Shop</span></a>
+    <nav class="topnav">
+      @if (auth.user(); as user) {
+        <span class="user-chip">
+          {{ user.username }}
+          <em>{{ user.role }}</em>
+        </span>
+        <button class="nav-btn" type="button" (click)="logout()">Déconnexion</button>
+      } @else {
+        <a class="btn primary small" routerLink="/connexion">Connexion</a>
+      }
+      <button class="nav-btn" type="button" (click)="openOrders()">Commandes</button>
+      <button class="nav-btn cart" type="button" (click)="ui.openCart()">
+        Panier
+        @if (cart.count() > 0) {
+          <span class="badge">{{ cart.count() }}</span>
+        }
+      </button>
+    </nav>
+  </div>
+</header>
+<main class="page">
+  <router-outlet />
+</main>
+<footer class="footer">SemanticShop — recherche sémantique sur catalogue</footer>
+<app-cart-drawer />
+<app-orders-drawer />
+@if (ui.recommendationsProductId() !== null) {
+  <app-recommendations-modal />
+}
+<app-toasts />

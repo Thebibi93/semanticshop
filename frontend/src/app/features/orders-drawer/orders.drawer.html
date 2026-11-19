@@ -1,0 +1,41 @@
+@if (ui.ordersOpen()) {
+  <div class="drawer-backdrop" (click)="ui.closeAll()"></div>
+  <aside class="drawer">
+    <div class="drawer-head">
+      <h2>Mes commandes</h2>
+      <button class="icon-btn" type="button" (click)="ui.closeAll()" aria-label="Fermer les commandes">✕</button>
+    </div>
+    <div class="drawer-body">
+      @if (loading()) {
+        <p class="empty-note">Chargement…</p>
+      } @else {
+        @if (error(); as message) {
+          <p class="empty-note">{{ message }}</p>
+        }
+        @if (orders(); as list) {
+          @if (list.length === 0) {
+            <p class="empty-note">Aucune commande pour le moment.</p>
+          }
+          @for (order of list; track order.id) {
+            <article class="order-card">
+              <div class="order-head">
+                <strong>Commande #{{ order.id }}</strong>
+                <span class="status {{ order.status }}">{{ order.status }}</span>
+              </div>
+              <div class="muted order-date">{{ formatDate(order.created_at) }}</div>
+              <ul class="order-items">
+                @for (item of order.items; track item.product_id) {
+                  <li>{{ item.quantity }} × {{ item.title }} — {{ item.unit_price | euros }}</li>
+                }
+              </ul>
+              <div class="total-row">
+                <span class="muted">Total</span>
+                <strong class="price">{{ order.total | euros }}</strong>
+              </div>
+            </article>
+          }
+        }
+      }
+    </div>
+  </aside>
+}

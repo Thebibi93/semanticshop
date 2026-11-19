@@ -1,0 +1,47 @@
+<div class="overlay-backdrop" (click)="close()">
+  <div class="panel" (click)="$event.stopPropagation()">
+    <div class="panel-head">
+      <h2>Produits similaires</h2>
+      <button class="icon-btn" type="button" (click)="close()" aria-label="Fermer les recommandations">✕</button>
+    </div>
+    <div class="panel-body">
+      @if (loading()) {
+        <p class="empty-note">Chargement des recommandations…</p>
+      } @else {
+        @if (error(); as message) {
+          <p class="empty-note">{{ message }}</p>
+        }
+        @if (products(); as list) {
+          @if (list.length === 0) {
+            <p class="empty-note">Aucun produit similaire trouvé.</p>
+          } @else {
+            <div class="reco-list">
+              @for (product of list; track product.id) {
+                <div class="reco-item">
+                  <div class="reco-info">
+                    <strong>{{ product.title }}</strong>
+                    <span class="muted">
+                      {{ product.category ?? "" }} · pertinence {{ scorePercent(product.score) }}%
+                    </span>
+                  </div>
+                  <div class="reco-actions">
+                    <span class="price">{{ product.price | euros }}</span>
+                    <button
+                      class="btn primary small"
+                      type="button"
+                      [disabled]="product.stock === 0"
+                      (click)="add(product)"
+                      aria-label="Ajouter au panier"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        }
+      }
+    </div>
+  </div>
+</div>

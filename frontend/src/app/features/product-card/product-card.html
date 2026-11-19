@@ -1,0 +1,24 @@
+<article class="card">
+  <div class="card-head">
+    <span class="chip">{{ product().category ?? "Divers" }}</span>
+    @if (scorePercent(); as percent) {
+      <span class="score-badge">pertinence {{ percent }}%</span>
+    }
+  </div>
+  <h3 class="card-title">{{ product().title }}</h3>
+  <p class="card-desc">{{ product().description ?? "" }}</p>
+  <div class="card-foot">
+    <span class="price">{{ product().price | euros }}</span>
+    @if (inStock()) {
+      <span class="stock-tag ok">En stock ({{ product().stock }})</span>
+    } @else {
+      <span class="stock-tag out">Rupture</span>
+    }
+  </div>
+  <div class="card-actions">
+    <button class="btn primary small" type="button" [disabled]="!inStock()" (click)="addToCart.emit(product())">
+      Ajouter au panier
+    </button>
+    <button class="btn ghost small" type="button" (click)="showSimilar.emit(product().id)">Similaires</button>
+  </div>
+</article>
